@@ -66,4 +66,11 @@ public class User {
     public void setFailedLoginAttempts(int failedLoginAttempts) {
         this.failedLoginAttempts = failedLoginAttempts;
     }
+
+    public void displayPaymentMethods(){
+        System.out.println("Danh sách phương thức thanh toán và số dư: ");
+        for (PaymentMethod paymentMethod : paymentMethods) {
+            System.out.println("\t"+paymentMethod.getClass().getSimpleName() + " với số dư " + paymentMethod.getBalance());
+        }
+    }
 }

@@ -3,13 +3,8 @@ package org.example.models;
 import org.example.constants.Constant;
 
 public class EWallet extends PaymentMethod {
-    private double balance;
-
-    public EWallet() {
-    }
-
     public EWallet(double balance) {
-        this.balance = balance;
+        super(balance);
     }
 
     @Override

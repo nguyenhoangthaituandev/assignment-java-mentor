@@ -3,7 +3,11 @@ package org.example.models;
 import org.example.constants.Constant;
 
 public class BankTransfer extends PaymentMethod {
-    private double balance;
+
+
+    public BankTransfer(double balance) {
+        super(balance);
+    }
 
     @Override
     public boolean processPayment(double amount) {

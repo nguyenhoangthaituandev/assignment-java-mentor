@@ -1,22 +1,23 @@
 package org.example;
 
 
-import org.example.models.CreditCard;
-import org.example.models.User;
+import org.example.models.*;
 import org.example.services.IUserService;
+import org.example.services.PaymentService;
 import org.example.services.UserServiceImp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.constants.Constant.sc;
 
 public class Main {
-
+    public static IUserService userService = new UserServiceImp();
+    public static User currentUser;
+    public static CreditCard creditCard;
+    public static PaymentService paymentService;
 
     public static void main(String[] args) {
-        IUserService userService = new UserServiceImp();
-        User user;
-        CreditCard creditCard;
-
-
         while (true) {
             System.out.println("-----------WELCOME TO PAYMENT SYSTEM------------");
             System.out.println("1. Register");
@@ -34,8 +35,8 @@ public class Main {
                     String username = sc.nextLine();
                     System.out.print("Enter your password: ");
                     String password = sc.nextLine();
-                    user = userService.login(username, password);
-                    if (user != null) {
+                    currentUser = userService.login(username, password);
+                    if (currentUser != null) {
                         showMenu();
                     }
                     break;
@@ -51,6 +52,7 @@ public class Main {
     private static void showMenu() {
         while (true) {
             System.out.println("-----------WELCOME TO PAYMENT SYSTEM------------");
+            System.out.println("0. Nạp tiền");
             System.out.println("1. Thực hiện thanh toán");
             System.out.println("2. Yêu cầu hoàn tiền");
             System.out.println("3. Báo cáo tài chính");
@@ -62,7 +64,27 @@ public class Main {
             sc.nextLine();
 
             switch (choice) {
+                case 0:
+                    System.out.print("Nhập số dư cho Credit Card: ");
+                    double creditCardBalance = sc.nextDouble();
+                    System.out.print("Nhập hạn mức cho Credit Card: ");
+                    double creditCardLimit = sc.nextDouble();
+
+                    System.out.print("Nhập số dư cho EWallet: ");
+                    double eWalletBalance = sc.nextDouble();
+
+                    System.out.print("Nhập số dư cho Bank account");
+                    double bankBalance = sc.nextDouble();
+
+                    List<PaymentMethod> userPayments = new ArrayList<>();
+                    userPayments.add(new CreditCard(creditCardBalance, creditCardLimit));
+                    userPayments.add(new EWallet(eWalletBalance));
+                    userPayments.add(new BankTransfer(bankBalance));
+                    currentUser.setPaymentMethods(userPayments);
+                    currentUser.displayPaymentMethods();
+                    break;
                 case 1:
+
                     break;
                 case 2:
                     break;

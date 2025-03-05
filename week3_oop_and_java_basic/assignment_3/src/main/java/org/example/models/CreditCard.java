@@ -1,21 +1,22 @@
 package org.example.models;
 
 public class CreditCard extends PaymentMethod {
-    private double creditLimit;
-    private double currentDebt;
+    private double limit;
+    private double debt;
 
-    public CreditCard(double creditLimit) {
-        this.currentDebt = 0;
-        this.creditLimit = creditLimit;
+    public CreditCard(double balance, double limit) {
+        super(balance);
+        this.limit = limit;
+        this.debt=0;
     }
 
     @Override
     public boolean processPayment(double amount) {
-        if(currentDebt+amount>creditLimit){
-            System.out.printf("Hạn mức tín dụng không đủ!");
+        if(debt+amount>limit){
+            System.out.println("Hạn mức tín dụng không đủ!");
             return false;
         }
-        currentDebt+=amount;
+        debt+=amount;
         return true;
     }
 }
