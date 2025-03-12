@@ -27,5 +27,8 @@ public abstract class PaymentMethod {
         this.balance = balance;
     }
 
-
+    public boolean refund(double amount) {
+        balance+=amount;
+        return true;
+    }
 }

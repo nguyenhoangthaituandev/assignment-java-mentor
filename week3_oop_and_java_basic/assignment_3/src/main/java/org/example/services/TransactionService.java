@@ -4,8 +4,12 @@ import org.example.models.CreditCard;
 import org.example.models.PaymentMethod;
 import org.example.models.Transaction;
 import org.example.models.User;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.example.constants.Constant.sc;
 
@@ -28,9 +32,13 @@ public class TransactionService implements ITransactionService {
         if (selectedPaymentMethod instanceof CreditCard) {
             CreditCard creditCard = (CreditCard) selectedPaymentMethod;
             if (creditCard.hasSufficientBalance(amount)) {
+                Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                recordTransaction(transaction);
                 return paymentService.processPayment(user, amount, selectedPaymentMethod);
             }
         } else if (selectedPaymentMethod.getBalance() >= amount) {
+            Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+            recordTransaction(transaction);
             return paymentService.processPayment(user, amount, selectedPaymentMethod);
         }
 
@@ -43,16 +51,37 @@ public class TransactionService implements ITransactionService {
                 CreditCard creditCard = (CreditCard) alternativeMethod;
                 if (creditCard.hasSufficientBalance(amount)) {
                     checkOver5000AndOTP(amount);
+                    Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                    recordTransaction(transaction);
                     return paymentService.processPayment(user, amount, alternativeMethod);
                 }
             } else if (alternativeMethod.getBalance() >= amount) {
                 checkOver5000AndOTP(amount);
+                Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                recordTransaction(transaction);
                 return paymentService.processPayment(user, amount, alternativeMethod);
             }
         }
 
         System.out.println("Không có phương thức đủ số dư để thanh toán, xin vui lòng nạp tiền");
         return false;
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return transactions;
+    }
+
+    @Override
+    public List<Transaction> getTransactionsForUser(User user) {
+        return getAllTransactions().stream()
+                .filter(transaction -> transaction.getUser().equals(user))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void recordTransaction(Transaction transaction) {
+        transactions.add(transaction);
     }
 
     private boolean checkOver5000AndOTP(double amount) {

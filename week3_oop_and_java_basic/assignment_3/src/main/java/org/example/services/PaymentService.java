@@ -14,16 +14,14 @@ public class PaymentService implements IPaymentService{
     public boolean processPayment(User user, double amount, PaymentMethod paymentMethod) {
         if(paymentMethod.deductBalance(amount)){
             System.out.println("Thanh toán thành công qua "+ paymentMethod.getClass().getSimpleName());
-            Transaction transaction=new Transaction(user,paymentMethod,amount, LocalDateTime.now());
-            recordTransaction(transaction);
+
             return true;
         }
         System.out.println("Thanh toán thất bại");
         return false;
     }
 
-    @Override
-    public void recordTransaction(Transaction transaction) {
-        transactions.add(transaction);
-    }
+
+
+
 }

@@ -6,6 +6,6 @@ import org.example.models.User;
 
 public interface IPaymentService {
     boolean processPayment(User user, double amount, PaymentMethod paymentMethod);
-    void recordTransaction(Transaction transaction);
+
 
 }

@@ -2,10 +2,7 @@ package org.example;
 
 
 import org.example.models.*;
-import org.example.services.IUserService;
-import org.example.services.PaymentService;
-import org.example.services.TransactionService;
-import org.example.services.UserServiceImp;
+import org.example.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,7 @@ public class Main {
     public static IUserService userService = new UserServiceImp();
     public static User currentUser;
     public static TransactionService transactionService = new TransactionService();
+    public static IRefundService refundService = new RefundServiceImp();
 
 
 
@@ -106,6 +104,26 @@ public class Main {
 
                     break;
                 case 2:
+                    List<Transaction> refundalbleTransactions=refundService.getRefundableTransaction(currentUser,transactionService);
+                    if(refundalbleTransactions.isEmpty()){
+                        System.out.println("Không có giao dịch trong vòng 7 ngày");
+                        return;
+                    }
+
+
+                    for(int i=0;i<refundalbleTransactions.size();i++){
+                        Transaction t=refundalbleTransactions.get(i);
+                        System.out.println(i+1+". "+t.getUser().getUsername() + " với giao dịch "+ t.getAmount() +" với phương thức thanh toán "+ t.getPaymentMethod().getClass().getSimpleName() );
+                    }
+                    System.out.print("Chọn giao dịch để hoàn tiền: ");
+                    int indexRefundTransaction=sc.nextInt()-1;
+                    if(indexRefundTransaction<0||indexRefundTransaction>=refundalbleTransactions.size()){
+                        System.out.println("Lựa chọn không hợp lệ");
+                        return;
+                    }
+
+                    Transaction selectedTransaction=refundalbleTransactions.get(indexRefundTransaction);
+                    refundService.processRefund(currentUser,selectedTransaction);
                     break;
                 case 3:
                     break;

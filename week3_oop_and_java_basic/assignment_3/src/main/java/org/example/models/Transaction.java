@@ -8,12 +8,21 @@ public class Transaction {
     private PaymentMethod paymentMethod;
     private double amount;
     private LocalDateTime time;
+    private boolean isRefunded;
 
     public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time) {
         this.user = user;
         this.paymentMethod = paymentMethod;
         this.amount = amount;
         this.time = time;
+        this.isRefunded=false;
+    }
+    public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time, boolean isRefunded) {
+        this.user = user;
+        this.paymentMethod = paymentMethod;
+        this.amount = amount;
+        this.time = time;
+        this.isRefunded=isRefunded;
     }
 
     public User getUser() {
@@ -46,5 +55,24 @@ public class Transaction {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public boolean isRefunded() {
+        return isRefunded;
+    }
+
+    public void setRefunded(boolean refunded) {
+        isRefunded = refunded;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "user=" + user +
+                ", paymentMethod=" + paymentMethod +
+                ", amount=" + amount +
+                ", time=" + time +
+                ", isRefunded=" + isRefunded +
+                '}';
     }
 }
