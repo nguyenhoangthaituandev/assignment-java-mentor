@@ -4,6 +4,7 @@ package org.example;
 import org.example.models.*;
 import org.example.services.IUserService;
 import org.example.services.PaymentService;
+import org.example.services.TransactionService;
 import org.example.services.UserServiceImp;
 
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ import static org.example.constants.Constant.sc;
 public class Main {
     public static IUserService userService = new UserServiceImp();
     public static User currentUser;
-    public static CreditCard creditCard;
-    public static PaymentService paymentService;
+    public static TransactionService transactionService = new TransactionService();
+
+
 
     public static void main(String[] args) {
         while (true) {
@@ -73,7 +75,7 @@ public class Main {
                     System.out.print("Nhập số dư cho EWallet: ");
                     double eWalletBalance = sc.nextDouble();
 
-                    System.out.print("Nhập số dư cho Bank account");
+                    System.out.print("Nhập số dư cho Bank account: ");
                     double bankBalance = sc.nextDouble();
 
                     List<PaymentMethod> userPayments = new ArrayList<>();
@@ -84,6 +86,23 @@ public class Main {
                     currentUser.displayPaymentMethods();
                     break;
                 case 1:
+                    System.out.print("Nhập số tiền thanh toán: ");
+                    double amount=sc.nextDouble();
+                    System.out.println("Phương thức thanh toán khả dụng là: ");
+                    for (int i = 0; i < currentUser.getPaymentMethods().size(); i++) {
+                        System.out.println((i + 1) + ". " + currentUser.getPaymentMethods().get(i).getClass().getSimpleName());
+                    }
+                    System.out.print("Mời bạn chọn phương thức thanh toán: ");
+                    int methodIndex = sc.nextInt() - 1;
+
+                    if (methodIndex < 0 || methodIndex >= currentUser.getPaymentMethods().size()) {
+                        System.out.println("Lựa chọn không hợp lệ.");
+                        continue;
+                    }
+
+                    PaymentMethod paymentMethod = currentUser.getPaymentMethods().get(methodIndex);
+
+                    transactionService.processTransaction(currentUser, amount, paymentMethod);
 
                     break;
                 case 2:

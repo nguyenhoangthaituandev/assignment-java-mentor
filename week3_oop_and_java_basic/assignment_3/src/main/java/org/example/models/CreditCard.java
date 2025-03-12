@@ -2,21 +2,37 @@ package org.example.models;
 
 public class CreditCard extends PaymentMethod {
     private double limit;
-    private double debt;
+
 
     public CreditCard(double balance, double limit) {
         super(balance);
         this.limit = limit;
-        this.debt=0;
+    }
+
+    public double getLimit() {
+        return limit;
+    }
+
+    public void setLimit(double limit) {
+        this.limit = limit;
     }
 
     @Override
-    public boolean processPayment(double amount) {
-        if(debt+amount>limit){
-            System.out.println("Hạn mức tín dụng không đủ!");
-            return false;
+    public boolean hasSufficientBalance(double amount) {
+        return (balance+limit)>=amount;
+    }
+
+    @Override
+    public boolean deductBalance(double amount) {
+        if(hasSufficientBalance(amount)){
+            if(amount>balance){
+                limit -=(amount-balance);
+                balance=0;
+            }else{
+                balance-=amount;
+            }
+            return true;
         }
-        debt+=amount;
-        return true;
+        return false;
     }
 }

@@ -7,6 +7,18 @@ public abstract class PaymentMethod {
         this.balance = balance;
     }
 
+    public boolean hasSufficientBalance(double amount) {
+        return balance >= amount;
+    }
+
+    public boolean deductBalance(double amount) {
+        if (hasSufficientBalance(amount)) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
     public double getBalance() {
         return balance;
     }
@@ -15,5 +27,5 @@ public abstract class PaymentMethod {
         this.balance = balance;
     }
 
-    abstract boolean processPayment(double amount);
+
 }
