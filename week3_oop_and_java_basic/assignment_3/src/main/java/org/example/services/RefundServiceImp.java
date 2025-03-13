@@ -31,7 +31,7 @@ public class RefundServiceImp implements IRefundService{
         PaymentMethod originalPaymentMethod=transaction.getPaymentMethod();
         if(originalPaymentMethod.refund(transaction.getAmount())){
             transaction.setRefunded(true);
-            transactionService.recordTransaction(new Transaction(user, originalPaymentMethod,-transaction.getAmount(), LocalDateTime.now(),true));
+            transactionService.recordTransaction(transaction);
             System.out.println("Hoàn tiền thành công về phương thức ban đầu.");
             return true;
         }

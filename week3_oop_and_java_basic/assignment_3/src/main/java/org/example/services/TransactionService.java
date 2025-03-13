@@ -33,11 +33,13 @@ public class TransactionService implements ITransactionService {
             CreditCard creditCard = (CreditCard) selectedPaymentMethod;
             if (creditCard.hasSufficientBalance(amount)) {
                 Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                transaction.setSuccess(true);
                 recordTransaction(transaction);
                 return paymentService.processPayment(user, amount, selectedPaymentMethod);
             }
         } else if (selectedPaymentMethod.getBalance() >= amount) {
             Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+            transaction.setSuccess(true);
             recordTransaction(transaction);
             return paymentService.processPayment(user, amount, selectedPaymentMethod);
         }
@@ -52,12 +54,14 @@ public class TransactionService implements ITransactionService {
                 if (creditCard.hasSufficientBalance(amount)) {
                     checkOver5000AndOTP(amount);
                     Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                    transaction.setSuccess(true);
                     recordTransaction(transaction);
                     return paymentService.processPayment(user, amount, alternativeMethod);
                 }
             } else if (alternativeMethod.getBalance() >= amount) {
                 checkOver5000AndOTP(amount);
                 Transaction transaction=new Transaction(user,selectedPaymentMethod,amount, LocalDateTime.now());
+                transaction.setSuccess(true);
                 recordTransaction(transaction);
                 return paymentService.processPayment(user, amount, alternativeMethod);
             }

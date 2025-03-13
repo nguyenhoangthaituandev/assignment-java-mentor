@@ -1,17 +1,23 @@
 package org.example.models;
 
+import org.example.Main;
 import org.example.constants.Constant;
 import org.example.constants.UserStatus;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.Main.transactionService;
+import static org.example.constants.Constant.sc;
 
 public class User {
     private String username;
     private String password;
     private UserStatus status;
-    private List<PaymentMethod> paymentMethods;
+    private List<PaymentMethod> paymentMethods=new ArrayList<>();
     private int failedLoginAttempts;
     private boolean isBusinessAccount;
+
 
     public User() {
 
@@ -23,6 +29,50 @@ public class User {
         this.status = UserStatus.ACTIVE;
         this.failedLoginAttempts=0;
         this.isBusinessAccount=isBusinessAccount;
+
+    }
+
+    public boolean changePassword(User user,String oldPassword, String newPassword){
+        if(!user.getPassword().equals(oldPassword)){
+            return false;
+        }
+        user.setPassword(newPassword);
+        return true;
+    }
+
+    public void addPaymentMethod(User user, PaymentMethod method){
+        user.getPaymentMethods().add(method);
+    }
+
+    public boolean removePaymentMethod(User user, PaymentMethod method) {
+        List<Transaction> pendingTransactions = transactionService.getTransactionsForUser(user)
+                .stream()
+                .filter(t -> t.getPaymentMethod().equals(method) && t.isPending())
+                .toList();
+
+        if (!pendingTransactions.isEmpty()) {
+            return false;
+        }
+        user.getPaymentMethods().remove(method);
+        return true;
+    }
+
+    public void viewSecurityInfo(User user) {
+        System.out.println("Tên người dùng: " + user.getUsername());
+        System.out.println("Loại tài khoản: " + (user.isBusinessAccount() ? "Doanh nghiệp" : "Cá nhân"));
+        System.out.println("Số lần đăng nhập thất bại: " + user.getFailedLoginAttempts());
+        System.out.println("Trạng thái tài khoản: " + (user.getStatus().toString() ));
+    }
+
+    public void logout(User user){
+        System.out.println("Bạn có chắc chắn muốn đăng xuất? (1: yes/0: no)");
+        int choose=sc.nextInt();
+        if(choose==1){
+            user = null;
+            System.out.println("Bạn đã đăng xuất thành công!");
+        }else{
+            System.out.println("Đăng xuất thất bại");
+        }
     }
 
     public boolean isBusinessAccount() {

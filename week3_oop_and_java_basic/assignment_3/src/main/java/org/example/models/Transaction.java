@@ -11,6 +11,7 @@ public class Transaction {
     private boolean isRefunded;
     private boolean isSuccess;
     private boolean isFraudDetection;
+    private boolean isPending;
 
     public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time) {
         this.user = user;
@@ -20,14 +21,15 @@ public class Transaction {
         this.isRefunded=false;
         this.isSuccess=true;
         this.isFraudDetection=false;
+
     }
-    public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time, boolean isRefunded) {
-        this.user = user;
-        this.paymentMethod = paymentMethod;
-        this.amount = amount;
-        this.time = time;
-        this.isRefunded=isRefunded;
-        this.isSuccess=false;
+
+    public boolean isPending() {
+        return isPending;
+    }
+
+    public void setPending(boolean pending) {
+        isPending = pending;
     }
 
     public boolean isSuccess() {
@@ -36,6 +38,7 @@ public class Transaction {
 
     public void setSuccess(boolean success) {
         isSuccess = success;
+        isPending=!success;
     }
 
     public boolean isFraudDetection() {
@@ -44,6 +47,9 @@ public class Transaction {
 
     public void setFraudDetection(boolean fraudDetection) {
         isFraudDetection = fraudDetection;
+        if (isFraudDetection) {
+            this.isPending = false;
+        }
     }
 
     public User getUser() {
