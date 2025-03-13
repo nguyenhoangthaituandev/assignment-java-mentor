@@ -9,6 +9,8 @@ public class Transaction {
     private double amount;
     private LocalDateTime time;
     private boolean isRefunded;
+    private boolean isSuccess;
+    private boolean isFraudDetection;
 
     public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time) {
         this.user = user;
@@ -16,6 +18,8 @@ public class Transaction {
         this.amount = amount;
         this.time = time;
         this.isRefunded=false;
+        this.isSuccess=true;
+        this.isFraudDetection=false;
     }
     public Transaction(User user, PaymentMethod paymentMethod, double amount, LocalDateTime time, boolean isRefunded) {
         this.user = user;
@@ -23,6 +27,23 @@ public class Transaction {
         this.amount = amount;
         this.time = time;
         this.isRefunded=isRefunded;
+        this.isSuccess=false;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
+
+    public boolean isFraudDetection() {
+        return isFraudDetection;
+    }
+
+    public void setFraudDetection(boolean fraudDetection) {
+        isFraudDetection = fraudDetection;
     }
 
     public User getUser() {

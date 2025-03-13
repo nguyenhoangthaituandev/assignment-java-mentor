@@ -11,16 +11,26 @@ public class User {
     private UserStatus status;
     private List<PaymentMethod> paymentMethods;
     private int failedLoginAttempts;
+    private boolean isBusinessAccount;
 
     public User() {
 
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, boolean isBusinessAccount) {
         this.username = username;
         this.password = password;
         this.status = UserStatus.ACTIVE;
         this.failedLoginAttempts=0;
+        this.isBusinessAccount=isBusinessAccount;
+    }
+
+    public boolean isBusinessAccount() {
+        return isBusinessAccount;
+    }
+
+    public void setBusinessAccount(boolean businessAccount) {
+        isBusinessAccount = businessAccount;
     }
 
     public void increaseFailedLoginAttempts() {

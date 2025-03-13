@@ -12,7 +12,7 @@ public class UserServiceImp implements IUserService{
     private Map<String,User> users=new HashMap<>();
 
     public UserServiceImp(){
-        users.put("admin",new User("admin","123456"));
+        users.put("admin",new User("admin","123456",true));
     }
 
     @Override
@@ -21,12 +21,16 @@ public class UserServiceImp implements IUserService{
         String username=sc.nextLine();
         System.out.print("Enter your password: ");
         String password=sc.nextLine();
+        System.out.println("Is BusinessAccount  true|false");
+        String numBussinessAccount=sc.nextLine();
         if(users.containsKey(username)){
             System.out.println("Username exists, Please enter another username");
             return false;
         }
 
-        User newUser=new User(username,password);
+        boolean isBussinessAccount=Boolean.parseBoolean(numBussinessAccount);
+
+        User newUser=new User(username,password,isBussinessAccount);
         users.put(username,newUser);
         System.out.println("Register successfully");
         return true;

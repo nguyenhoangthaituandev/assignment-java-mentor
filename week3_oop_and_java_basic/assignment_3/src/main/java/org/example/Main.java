@@ -14,6 +14,7 @@ public class Main {
     public static User currentUser;
     public static TransactionService transactionService = new TransactionService();
     public static IRefundService refundService = new RefundServiceImp();
+    public static IFinancialReportService financialReportService=new FinancialReportImp();
 
 
 
@@ -126,6 +127,7 @@ public class Main {
                     refundService.processRefund(currentUser,selectedTransaction);
                     break;
                 case 3:
+                    financialReportService.generateReport(currentUser,transactionService);
                     break;
                 case 4:
                     break;

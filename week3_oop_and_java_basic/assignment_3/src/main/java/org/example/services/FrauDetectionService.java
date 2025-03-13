@@ -20,7 +20,11 @@ public class FrauDetectionService implements IFraudDetectionService{
                 .filter(t -> t.getAmount() > frauAmount && Duration.between(t.getTime(), now).compareTo(frauTimeCountDown) <= 0)
                 .count();
 
-        return recentLargeTransactions >= frauTime;
+        boolean isFraud=recentLargeTransactions >= frauTime;
+        if(isFraud){
+            transactions.forEach(t->t.setFraudDetection(isFraud));
+        }
+        return isFraud;
     }
 
     @Override
