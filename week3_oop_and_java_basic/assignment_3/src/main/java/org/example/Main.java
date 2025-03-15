@@ -4,8 +4,7 @@ package org.example;
 import org.example.models.*;
 import org.example.services.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.example.constants.Constant.sc;
 
