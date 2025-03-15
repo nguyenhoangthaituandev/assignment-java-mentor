@@ -8,11 +8,13 @@
 4. Làm bài tập, hoàn thành các todo, answer trong folder theo từng tuần
 5. Gửi mentor review theo từng tuần
 
-git remote add upstream https://github.com/owner/repository.git.
-git remote -v.
-git fetch upstream.
-git checkout “mybranch”.
-git merge upstream/main.
-git push origin “mybranch”.
+
+# Pull code  
+1. git remote add upstream https://github.com/owner/repository.git
+2. git remote -v.
+3. git fetch upstream.
+4. git checkout “mybranch”.
+5. git merge upstream/main.
+6. git push origin “mybranch”.
 
 
